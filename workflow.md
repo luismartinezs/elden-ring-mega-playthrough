@@ -1,0 +1,5 @@
+- research a boss weaknesses, resistances and what damage types they deal
+- research effective builds for each boss
+- choose a suitable and new build
+- research how to find the items required for the selected build
+- check the fitting marks for that build

@@ -1,0 +1,40 @@
+- [ ] bolt of gransax
+- [ ] moonveil
+- [ ] spear of the impaler
+- [ ] mohgwyn sacred spear
+- [ ] greatsword
+- [ ] wing of astel
+- [ ] bloodhound fang
+- [ ] blasphemous blade
+- [ ] star fist
+- [ ] great stars
+- [ ] sacred relic sword
+- [ ] claymore
+- [ ] cross-naginata
+- [ ] nagakiba
+- [ ] rivers of blood
+- [ ] zweihander
+- [ ] maliketh black blade
+- [ ] morgott cursed sword
+- [ ] rusted anchor
+- [ ] marais executioner sword
+- [ ] golden halberd
+- [ ] hand of malenia
+- [ ] antspur rapier
+- [ ] sword of night and flame
+- [ ] giant-crusher
+- [ ] serpent-hunter
+- [ ] euporia
+- [ ] dueling shield / carian thrusting shield
+- [ ] dane's footwork
+- [ ] milady
+- [ ] rellana twin blades
+- [ ] dragonhunter greatkatana
+- [ ] dark moon greatsword
+- [ ] ancient meteoric ore gs
+- [ ] fire knight gs
+- [ ] sword lance
+- [ ] marika's hammer
+- [ ] black steel greathammer
+- [ ] smithscript greathammer
+- [ ] black bow

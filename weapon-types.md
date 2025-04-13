@@ -1,0 +1,42 @@
+- [ ] Daggers
+- [ ] Straight Swords
+- [ ] Greatswords
+- [ ] Colossal Swords
+- [ ] Thrusting Swords
+- [ ] Heavy Thrusting Swords
+- [ ] Curved Swords
+- [ ] Curved Greatswords
+- [ ] Katanas
+- [ ] Twinblades
+- [ ] Axes
+- [ ] Greataxes
+- [ ] Hammers
+- [ ] Great Hammers
+- [ ] Flails
+- [ ] Spears
+- [ ] Great Spears
+- [ ] Halberds
+- [ ] Reapers
+- [ ] Whips
+- [ ] Claws
+- [ ] Fists
+- [ ] Colossal Weapons
+- [ ] Light Bows
+- [ ] Bows
+- [ ] Greatbows
+- [ ] Crossbows
+- [ ] Ballistae
+- [ ] Sacred Seals
+- [ ] Staves
+- [ ] Torches
+- [ ] Small Shields
+- [ ] Medium Shields
+- [ ] Greatshields
+- [ ] Beast Claws
+- [ ] Hand-to-Hand Arts
+- [ ] Throwing Blades
+- [ ] Backhand Blades
+- [ ] Perfume Bott Ascetics
+- [ ] Light Greatswords
+- [ ] Great Katanas
+- [ ] Thrusting Shields

@@ -1,0 +1,1 @@
+- Asking perplexity or gemini to research boss weaknesses and strengths is not too effective, can lead to hallucinations, tht said perplexity seems to yield more accurate results, could be a good approximation

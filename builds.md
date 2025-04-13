@@ -1,0 +1,19 @@
+- early game
+  - meteorite staff + rock sling
+  - jump attack
+  - Samurai Bleed: uchi, longbow, dex
+  - paladin: shield, short and incantations
+  - mage: Glintstone Pebble, Meteorite Staff, int
+  - Bloodblade: Dual-wield katanas with bleed effects
+  - Stormblade: Storm Stomp Ash of War, Greatsword or Longsword
+  - bloodhound's fang
+- mid game
+  - Moonveil: Moonveil Katana, Carian Filigreed Crest, int/dex
+- late game
+  - Blasphemous Blade, fire, str/fai
+  - Death’s Poker, frost, int, melee
+  - Darkmoon Greatsword, int/str, Darkmoon Greatsword, Carian Regal Scepter
+- ng+
+  - BB fire, str/fai
+  - Savage Lion’s Claw Colossal Weapon, giant-crusher
+  - Marais Executioner's Sword, str/arc
