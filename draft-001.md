@@ -1,0 +1,5 @@
+- Margit
+  - Slash
+    - Weapon: scimitar (7,13), 600r / Bloodhound's Fang / uchigatana
+    - Off hand: Shield 100 phys, no skill
+    - turtle talisman
