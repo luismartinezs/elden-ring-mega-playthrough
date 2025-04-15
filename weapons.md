@@ -7,7 +7,7 @@
 - [ ] mohgwyn sacred spear
 - [ ] greatsword
 - [ ] wing of astel
-- [ ] bloodhound fang
+- [ ] bloodhound fang (18,17)
 - [ ] blasphemous blade
 - [ ] star fist
 - [ ] great stars

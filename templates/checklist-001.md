@@ -78,14 +78,14 @@
 - [ ] Great Katanas
 - [ ] Thrusting Shields
 # Weapons
-- [ ] smithscript dagger (80dex keen)
+- [ ] Bloodhound's Fang (18,17) somber
 - [ ] warped axe (60str 2h)
-- [ ] Bolt of Gransax
+- [ ] Rusted Anchor
+- [ ] Greatsword
 - [ ] Moonveil
+- [ ] Bolt of Gransax
 - [ ] Mohgwyn's Sacred Spear
-- [ ] Greatsword (Colossal)
 - [ ] Wing of Astel
-- [ ] Bloodhound's Fang
 - [ ] Blasphemous Blade
 - [ ] Star Fist
 - [ ] Great Stars
@@ -97,7 +97,6 @@
 - [ ] Zweihander
 - [ ] Maliketh's Black Blade
 - [ ] Morgott's Cursed Sword
-- [ ] Rusted Anchor
 - [ ] Marais Executioner's Sword
 - [ ] Golden Halberd
 - [ ] Hand of Malenia
@@ -108,18 +107,19 @@
 - [ ] Dark Moon Greatsword
 - [ ] Marika's Hammer
 - [ ] Black Bow
-- [ ] Spear of the Impaler
-- [ ] Euporia
-- [ ] Dueling Shield
-- [ ] Dane's Footwork
-- [ ] Milady
-- [ ] Rellana's Twin Blades
-- [ ] Dragonhunter Greatkatana
-- [ ] Ancient Meteoric Ore Greatsword
-- [ ] Fire Knight's Greatsword
-- [ ] Sword Lance
-- [ ] Black Steel Greathammer
-- [ ] Smithscript Greathammer
+- [ ] Spear of the Impaler (DLC)
+- [ ] Euporia (DLC)
+- [ ] Dueling Shield (DLC)
+- [ ] Dane's Footwork (DLC)
+- [ ] Milady (DLC)
+- [ ] Rellana's Twin Blades (DLC)
+- [ ] Dragonhunter Greatkatana (DLC)
+- [ ] Ancient Meteoric Ore Greatsword (DLC)
+- [ ] Fire Knight's Greatsword (DLC)
+- [ ] Sword Lance (DLC)
+- [ ] Black Steel Greathammer (DLC)
+- [ ] Smithscript Greathammer (DLC)
+- [ ] smithscript dagger (80dex keen) (DLC)
 # Shields
 # Incantations by School
 - [ ] Bestial

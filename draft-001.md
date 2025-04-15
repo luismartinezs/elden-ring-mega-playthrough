@@ -5,7 +5,15 @@
 # mistwood
 - greenspill+spiked, axe talisman
 - hit siofra well grace
+- axe talisman + hear howl
 - fort haight grace
+- get gesture from kale
+- use gesture nearby mistwood ruins
+# collect items
+- get lantern from lirunia merchant when possible
+- bloodflame (liurnia)
+- dex tear (liurnia)
+- str tear (stormhill)
 # runes
 - flail
 - greyoll
@@ -14,6 +22,7 @@
 #
 - tibia mariner, weak vs strike and holy
   - deathroot
+- clawmark seal
 # pick items
 - meteorite staff, rock sling, reduvia, uchi, bloodhound fang, morning star, claymore, sword of st trina, clawmark seal (1 deathroot)
 - rusted anchor
@@ -23,7 +32,7 @@
     - fire + slash + shield
       - fire grease? (root resin + smoldering b), Armorer's Cookbook [1] (limgrave)
       - Flame of the Redmanes aow? - invisible scarab
-      - bloodflame (_,12,10) + bloodhound fang + any seal (+ m shield) + dex/str flasks | greenspill + opaline
+      - bloodflame (_,12,10) + bloodhound fang + any seal (+ m shield) + dex/str flasks
       - 2h Lordsworn's Greatsword (or other greatsword) + fire grease + storm blade (hero or vagabond)
         - chain cast storm blade
     - grafted blade greatsword
