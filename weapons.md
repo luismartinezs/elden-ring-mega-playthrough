@@ -1,3 +1,6 @@
+# Early game
+- [ ] meteorite staff
+# Any
 - [ ] bolt of gransax
 - [ ] moonveil
 - [ ] spear of the impaler

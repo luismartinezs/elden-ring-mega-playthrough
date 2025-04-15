@@ -1,0 +1,231 @@
+# Damage type
+## Physical
+- [ ] standard
+- [ ] strike
+- [ ] slash
+- [ ] pierce
+## Elemental
+- [ ] fire
+- [ ] lightning
+- [ ] magic
+- [ ] holy
+# Status
+- [ ] Bleed
+- [ ] Rot
+- [ ] Poison
+- [ ] Deadly poison
+- [ ] frost
+- [ ] Sleep
+- [ ] Sleep evermore
+- [ ] Madness
+# Build types
+- [ ] Pure STR
+- [ ] Pure DEX
+- [ ] Pure INT
+- [ ] Pure FAI
+- [ ] Pure ARC
+- [ ] STR/DEX
+- [ ] STR/INT
+- [ ] STR/FAI
+- [ ] STR/ARC
+- [ ] DEX/INT
+- [ ] DEX/FAI
+- [ ] DEX/ARC
+- [ ] INT/FAI
+- [ ] INT/ARC
+- [ ] FAI/ARC
+# Weapon types
+- [ ] Daggers
+- [ ] Straight Swords
+- [ ] Greatswords
+- [ ] Colossal Swords
+- [ ] Thrusting Swords
+- [ ] Heavy Thrusting Swords
+- [ ] Curved Swords
+- [ ] Curved Greatswords
+- [ ] Katanas
+- [ ] Twinblades
+- [ ] Axes
+- [ ] Greataxes
+- [ ] Hammers
+- [ ] Great Hammers
+- [ ] Flails
+- [ ] Spears
+- [ ] Great Spears
+- [ ] Halberds
+- [ ] Reapers
+- [ ] Whips
+- [ ] Claws
+- [ ] Fists
+- [ ] Colossal Weapons
+- [ ] Light Bows
+- [ ] Bows
+- [ ] Greatbows
+- [ ] Crossbows
+- [ ] Ballistae
+- [ ] Sacred Seals
+- [ ] Staves
+- [ ] Torches
+- [ ] Small Shields
+- [ ] Medium Shields
+- [ ] Greatshields
+- [ ] Beast Claws
+- [ ] Hand-to-Hand Arts
+- [ ] Throwing Blades
+- [ ] Backhand Blades
+- [ ] Perfume Bottles
+- [ ] Light Greatswords
+- [ ] Great Katanas
+- [ ] Thrusting Shields
+# Weapons
+- [ ] smithscript dagger (80dex keen)
+- [ ] warped axe (60str 2h)
+- [ ] Bolt of Gransax
+- [ ] Moonveil
+- [ ] Mohgwyn's Sacred Spear
+- [ ] Greatsword (Colossal)
+- [ ] Wing of Astel
+- [ ] Bloodhound's Fang
+- [ ] Blasphemous Blade
+- [ ] Star Fist
+- [ ] Great Stars
+- [ ] Sacred Relic Sword
+- [ ] Claymore
+- [ ] Cross-Naginata
+- [ ] Nagakiba
+- [ ] Rivers of Blood
+- [ ] Zweihander
+- [ ] Maliketh's Black Blade
+- [ ] Morgott's Cursed Sword
+- [ ] Rusted Anchor
+- [ ] Marais Executioner's Sword
+- [ ] Golden Halberd
+- [ ] Hand of Malenia
+- [ ] Antspur Rapier
+- [ ] Sword of Night and Flame
+- [ ] Giant-Crusher
+- [ ] Serpent-Hunter
+- [ ] Dark Moon Greatsword
+- [ ] Marika's Hammer
+- [ ] Black Bow
+- [ ] Spear of the Impaler
+- [ ] Euporia
+- [ ] Dueling Shield
+- [ ] Dane's Footwork
+- [ ] Milady
+- [ ] Rellana's Twin Blades
+- [ ] Dragonhunter Greatkatana
+- [ ] Ancient Meteoric Ore Greatsword
+- [ ] Fire Knight's Greatsword
+- [ ] Sword Lance
+- [ ] Black Steel Greathammer
+- [ ] Smithscript Greathammer
+# Shields
+# Incantations by School
+- [ ] Bestial
+- [ ] Black Flame
+- [ ] Blood Oath (DLC)
+- [ ] Dragon Communion
+- [ ] Dragon Cult
+- [ ] Erdtree
+- [ ] Frenzied Flame
+- [ ] Giant's Flame
+- [ ] Golden Order
+- [ ] Messmer's Flame (DLC)
+- [ ] Miquellan (DLC)
+- [ ] Servants of Rot
+- [ ] Spiral Tower (DLC)
+- [ ] Two Fingers
+# Incantations
+- [ ] flame of frenzy
+- [ ] flame, cleanse me
+- [ ] heal from afar
+# Sorceries by School
+- [ ] Carian
+- [ ] Cold
+- [ ] Crystalian
+- [ ] Death
+- [ ] Finger (Oracle counts)
+- [ ] Glintstone
+- [ ] Gravity
+- [ ] Magma
+- [ ] Moon
+- [ ] Oracle
+- [ ] Sellian (Night)
+- [ ] Thorn
+# Sorceries
+- [ ] crystal release
+# Ashes of war
+- [ ] prayerful strike (fai)
+- [ ] determination
+- [ ] sacred blade
+- [ ] poisonous mist
+- [ ] chilling mist
+- [ ] seppuku
+- [ ] flame of the redmanes
+- [ ] Lion's Claw
+- [ ] Wild Strikes
+- [ ] Endure
+- [ ] Unsheathe
+- [ ] Quickstep (hiligtree rot section)
+- [ ] Bloodhound's Step
+- [ ] Storm Blade
+- [ ] Glintblade Phalanx
+- [ ] Carian Retaliation
+- [ ] Flaming Strike
+- [ ] Lightning Slash
+- [ ] Vow of the Indomitable
+- [ ] golden vow
+- [ ] bloody slash
+- [ ] blood tax
+- [ ] blood blade
+- [ ] Poison Flower Blooms Twice
+- [ ] Carian Sovereignty
+- [ ] Flame Skewer
+- [ ] Flame Spear
+- [ ] Wing Stance
+- [ ] Blind Spot
+- [ ] Palm Blast
+# Talismans
+- [ ] crusade insignia (when killing multiple enemies)
+# Consumables
+- [ ] pots
+- [ ] Hefty Pots
+- [ ] Grease
+- [ ] Boluses
+- [ ] Pickled/dried Liver
+- [ ] Cured Meat
+- [ ] Boiled Crab/Prawn
+- [ ] Offensive Perfume
+  - [ ] Poison Spraymist (super deadly poison)
+- [ ] Defensive/Utility Perfume
+- [ ] Throwing Projectile
+- [ ] Bewitching Branch
+# Buffs
+https://www.reddit.com/r/Eldenring/comments/u6cm4n/buff_stacking/#lightbox
+## Weapon
+- [ ] bloodflame blade
+- [ ] electrify armament
+- [ ] black flame blade
+- [ ] poison armament
+## Body
+- [ ] lightning f -> golden lightning f
+- [ ] protection of the erdtree
+- [ ] flame, grant me strength
+- [ ] flame f -> flame, protect me
+- [ ] black flame's protection
+- [ ] magic f -> barrier of gold
+- [ ] divine f -> lord's divine f
+- [ ] Howl of Shabriri
+- [ ] Boiled crab
+## Aura
+- [ ] golden vow
+- [ ] aow: golden vow
+- [ ] commander's standard
+## Regen
+- [ ] blessing of the erdtree
+- [ ] bestial vitality
+## Special
+- [ ] jellyfish shield
+- [ ] aow: endure
+- [ ] greenburst tear
