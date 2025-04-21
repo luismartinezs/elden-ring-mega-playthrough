@@ -1,0 +1,52 @@
+this draft is created with minimal or no optimization, not checking any information, and improvising a lot
+
+- start as vagabond
+- collect init items
+- leonine misbegotten (castle morne)
+  - equip: longsword + Heater Shield
+  - stamina and charge attack tears
+- kill margit
+  - equip: longsword + Heater Shield
+  - build: 20 str, 20 vgr, 20 end
+  - stamina and charge attack tears
+  - axe talisman
+- kill godrick
+  - same as margit
+- red wolf of radagon
+  - same build
+  - talisman: magic protection, stamina
+- rennala
+  - double scimitar with bleed
+  - 20 dex
+  - talisman: magic protection, multihit
+- siofra ancestor spirit
+  - fire + holy (sacred blade)
+- loretta (caria manor)
+  - lightning aow
+- dragonkin soldier of nokstella
+  - dual scimitar
+- magma wyrm makar
+  - shield and longsword
+- radahn
+  - scarlet rot (ballista in roundtable hold) + summons
+- mimic tear
+  - unequip everything, let mimic tear spawn, then equip everything
+- regal ancestor spirit
+  - fire + holy
+- valiant gargoyles
+  - mimic tear + strike weapon (no elemental)
+- godskin noble
+  - sleep pot + dual scimitar bleed
+- rykard
+  - just use the serpent hunter
+  - fire resistance buffs
+- elemer of the briar
+  - pierce lightning
+- goldfrey
+  - pierce lightning
+- morgott
+  - same build used for margit
+- astel
+  - just suck it up :/
+- fias champions
+- fortissax
