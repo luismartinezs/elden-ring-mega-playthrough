@@ -1,43 +1,48 @@
-# Early game
-- [ ] meteorite staff
+# Early game (1-50, up to Rennala)
+# Mid game (51-100, up to Morgott)
+# Late game (101-150+)
+# DLC (150-180+)
+# NG+ (180+)
 # Any
-- [ ] bolt of gransax
-- [ ] moonveil
-- [ ] spear of the impaler
-- [ ] mohgwyn sacred spear
-- [ ] greatsword
-- [ ] wing of astel
-- [ ] bloodhound fang (18,17)
-- [ ] blasphemous blade
-- [ ] star fist
-- [ ] great stars
-- [ ] sacred relic sword
-- [ ] claymore
-- [ ] cross-naginata
-- [ ] nagakiba
-- [ ] rivers of blood
-- [ ] zweihander
-- [ ] maliketh black blade
-- [ ] morgott cursed sword
-- [ ] rusted anchor
-- [ ] marais executioner sword
-- [ ] golden halberd
-- [ ] hand of malenia
-- [ ] antspur rapier
-- [ ] sword of night and flame
-- [ ] giant-crusher
-- [ ] serpent-hunter
-- [ ] euporia
-- [ ] dueling shield / carian thrusting shield
-- [ ] dane's footwork
-- [ ] milady
-- [ ] rellana twin blades
-- [ ] dragonhunter greatkatana
-- [ ] dark moon greatsword
-- [ ] ancient meteoric ore gs
-- [ ] fire knight gs
-- [ ] sword lance
-- [ ] marika's hammer
-- [ ] black steel greathammer
-- [ ] smithscript greathammer
-- [ ] black bow
+- [ ] dane's footwork (8/8/-/-/-) (Sum: 16)
+- [ ] star fist (12/8/-/-/-) (Sum: 20)
+- [ ] carian thrusting shield (17/13/15/-/-) (Sum: 45)
+- [ ] meteorite staff (6/-/18/-/-) (Sum: 24)
+- [ ] dueling shield (15/14/-/-/-) (Sum: 29)
+- [ ] serpent-hunter (15/12/-/-/-) (Sum: 27)
+- [ ] claymore (16/13/-/-/-) (Sum: 29)
+- [ ] milady (12/17/-/-/-) (Sum: 29)
+- [ ] zweihander (19/11/-/-/-) (Sum: 30)
+- [ ] antspur rapier (10/20/-/-/-) (Sum: 30)
+- [ ] sword lance (21/11/-/-/-) (Sum: 32)
+- [ ] great stars (22/12/-/-/-) (Sum: 34)
+- [ ] rusted anchor (26/8/-/-/-) (Sum: 34)
+- [ ] bloodhound fang (18/17/-/-/-) (Sum: 35)
+- [ ] dragon-hunter's great katana (15/20/-/-/-) (Sum: 35)
+- [ ] cross-naginata (16/20/-/-/-) (Sum: 36)
+- [ ] sacred relic sword (14/24/-/-/-) (Sum: 38)
+- [ ] nagakiba (18/22/-/-/-) (Sum: 40)
+- [ ] black bow (20/20/-/-/-) (Sum: 40)
+- [ ] greatsword (31/12/-/-/-) (Sum: 43)
+- [ ] wing of astel (7/17/20/-/-) (Sum: 44)
+- [ ] fire knight gs (20/12/-/14/-) (Sum: 46)
+- [ ] maliketh black blade (34/12/-/-/-) (Sum: 46)
+- [ ] morgott cursed sword (14/35/-/-/-) (Sum: 49)
+- [ ] ancient meteoric ore gs (20/12/-/-/18) (Sum: 50)
+- [ ] rivers of blood (12/18/-/-/20) (Sum: 50)
+- [ ] marika's hammer (20/12/-/19/-) (Sum: 51)
+- [ ] smithscript greathammer (20/10/11/11/-) (Sum: 52)
+- [ ] moonveil (12/18/23/-/-) (Sum: 53)
+- [ ] euporia (10/25/18/-/-) (Sum: 53)
+- [ ] black steel greathammer (25/11/-/17/-) (Sum: 53)
+- [ ] golden halberd (30/14/-/12/-) (Sum: 56)
+- [ ] blasphemous blade (22/15/-/21/-) (Sum: 58)
+- [ ] bolt of gransax (20/40/-/-/-) (Sum: 60)
+- [ ] giant-crusher (60/-/-/-/-) (Sum: 60)
+- [ ] marais executioner sword (24/14/-/23/-) (Sum: 61)
+- [ ] rellana twin blades (13/16/16/16/-) (Sum: 61)
+- [ ] hand of malenia (16/48/-/-/-) (Sum: 64)
+- [ ] mohgwyn sacred spear (24/14/-/-/27) (Sum: 65)
+- [ ] dark moon greatsword (16/11/38/-/-) (Sum: 65)
+- [ ] sword of night and flame (12/12/24/24/-) (Sum: 72)
+- [ ] spear of the impaler (20/35/-/50/-) (Sum: 105)
