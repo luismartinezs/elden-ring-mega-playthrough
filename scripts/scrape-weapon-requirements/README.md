@@ -1,0 +1,4 @@
+- cd into this directory
+- scrape weapon requirements: `bun run scrapeRequirements.ts`
+- `python recalculate_totals.py`
+- `python sort_weapons.py`
