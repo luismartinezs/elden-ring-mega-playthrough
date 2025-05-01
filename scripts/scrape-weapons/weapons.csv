@@ -1,0 +1,2 @@
+name,category,phyAtk,magAtk,fireAtk,ligtAtk,holyAtk,critAtk,sorAtk,incAtk,phyGuard,magGuard,fireGuard,ligtGuard,holyGuard,boostGuard,strScale,dexScale,intScale,faiScale,arcScale,strReq,dexReq,intReq,faiReq,arcReq,damageTypes,weaponSkill,fpCost,weight,passive,upgradeType,url
+"Dueling Shield","Thrusting Shield","125","0","0","0","0","100","0","0","88","44","39","55","53","58","D","D","-","-","-","15","14","-","-","-","Standard/Pierce","Shield Strike","0","9.0","-","Regular","https://eldenring.wiki.fextralife.com/Dueling+Shield"

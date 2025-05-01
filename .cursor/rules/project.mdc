@@ -1,0 +1,8 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project
+- Use bun and typescript
+- any dependencies are installed in the scripts folder, not in the root

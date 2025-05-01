@@ -1,0 +1,456 @@
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import * as fs from 'fs';
+import * as path from 'path';
+
+const BASE_URL = 'https://eldenring.wiki.fextralife.com';
+const WEAPONS_LIST_URL = `${BASE_URL}/Weapons`;
+const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
+// Control parameter: Set to a positive number to limit scraping, or -1 to scrape all.
+const MAX_WEAPONS_TO_SCRAPE = 1;
+
+interface WeaponData {
+    name: string;
+    category: string;
+    phyAtk: string;
+    magAtk: string;
+    fireAtk: string;
+    ligtAtk: string;
+    holyAtk: string;
+    critAtk: string;
+    sorAtk: string;
+    incAtk: string;
+    phyGuard: string;
+    magGuard: string;
+    fireGuard: string;
+    ligtGuard: string;
+    holyGuard: string;
+    boostGuard: string;
+    strScale: string;
+    dexScale: string;
+    intScale: string;
+    faiScale: string;
+    arcScale: string;
+    strReq: string;
+    dexReq: string;
+    intReq: string;
+    faiReq: string;
+    arcReq: string;
+    damageTypes: string;
+    weaponSkill: string;
+    fpCost: string;
+    weight: string;
+    passive: string;
+    upgradeType: 'Somber' | 'Regular' | 'Unknown';
+    url: string;
+}
+
+// Helper function to safely extract text, returning '-' if not found or empty
+const safeExtractText = ($: cheerio.CheerioAPI, selector: string, context?: cheerio.Cheerio): string => {
+    const element = context ? $(selector, context) : $(selector);
+    const text = element.text().trim();
+    return text || '-';
+};
+
+// Helper function to extract numerical value from text, defaulting to 0 if label is present but no value or just '-'
+const extractValueOrZero = (text: string): string => {
+    const match = text ? text.match(/-?\d+(\.\d+)?/) : null;
+    if (match) {
+        return match[0];
+    } else if (text && text.trim() === '-') {
+        // Handle cases like "FP -" or "Passive -"
+        return '0';
+    }
+    return '0'; // Default to 0 if no number found or text is empty/null
+};
+
+// Helper function to find the text node immediately following a specific element or its parent span
+const findNextTextNodeValue = ($: cheerio.CheerioAPI, element: cheerio.Cheerio): string => {
+    if (!element.length) return ''; // Ensure element exists
+    const firstNode = element[0];
+    if (!firstNode) return ''; // Explicitly check node existence
+
+    // 1. Check immediate next sibling
+    // @ts-ignore - Workaround for persistent Cheerio type issue
+    let nextNode = firstNode.nextSibling;
+    if (nextNode?.type === 'text') {
+        // @ts-ignore - Workaround for persistent Cheerio type issue
+        const text = (nextNode as cheerio.TextElement).data.trim();
+        if (text) return text; // Return if found and not empty
+    }
+
+    // 2. Check parent's next sibling (handles cases where element is wrapped, e.g., in a span)
+    // @ts-ignore - Workaround for persistent Cheerio type issue
+    const parentNode = firstNode.parentNode;
+    if (parentNode && parentNode.type !== 'root') { // Check if parent exists and is not the root
+        // @ts-ignore - Workaround for persistent Cheerio type issue
+        nextNode = parentNode.nextSibling;
+        if (nextNode?.type === 'text') {
+             // @ts-ignore - Workaround for persistent Cheerio type issue
+            const text = (nextNode as cheerio.TextElement).data.trim();
+            if (text) return text; // Return if found and not empty
+        }
+    }
+
+    // 3. Fallback: Check next span sibling (less common case seen before)
+    const nextSpan = element.next('span');
+    if (nextSpan.length) {
+        const spanText = nextSpan.text().trim();
+        if (spanText) return spanText;
+    }
+
+    return ''; // Return empty if not found
+};
+
+// Helper function to extract scaling value (letter or -)
+const extractScaling = (text: string, type: 'Str' | 'Dex' | 'Int' | 'Fai' | 'Arc'): string => {
+    const regex = new RegExp(`${type}\\s+([A-Z\\-])`);
+    const match = text.match(regex);
+    return match ? (match[1] ?? '-') : '-';
+};
+
+// Helper function to extract requirement value (number or -)
+const extractRequirement = (text: string, type: 'Str' | 'Dex' | 'Int' | 'Fai' | 'Arc'): string => {
+    const reqRegex = new RegExp(`${type}\\s+(\\d+)`);
+    const match = text.match(reqRegex);
+    return match ? (match[1] ?? '-') : '-';
+};
+
+// Helper function to extract passive effect text and value if present
+const extractPassive = (element: cheerio.Cheerio): string => {
+    const text = element.text().replace('Passive', '').trim();
+    const valueMatch = text.match(/\((\d+)\)/); // Look for value in parentheses
+    const value = valueMatch ? `(${valueMatch[1]})` : '';
+    const effectName = text.replace(/\(\d+\)/, '').trim(); // Remove the value part
+
+    if (!effectName || effectName === '-') return '-';
+
+    // Try to get the text description from the link's title if available
+    const linkTitle = element.find('a[title]').attr('title');
+    const nameFromTitle = linkTitle ? linkTitle.replace('Elden Ring ', '').trim() : effectName;
+
+    return `${nameFromTitle}${value}`.trim();
+};
+
+// Function to scrape data for a single weapon
+async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
+    try {
+        const fullUrl = weaponUrl.startsWith('http') ? weaponUrl : `${BASE_URL}${weaponUrl}`;
+        console.log(`Scraping: ${fullUrl}`);
+        const { data } = await axios.get(fullUrl);
+        const $ = cheerio.load(data);
+
+        const infobox = $('#infobox');
+        if (!infobox.length) {
+            console.warn(`Could not find infobox for ${fullUrl}`);
+            return null;
+        }
+
+        // Initialize weaponData with defaults, especially for numeric types
+        const weaponData: Partial<WeaponData> = {
+            url: fullUrl,
+            name: infobox.find('h2').first().text().trim() || '-',
+            phyAtk: '-', magAtk: '-', fireAtk: '-', ligtAtk: '-', holyAtk: '-', critAtk: '-', sorAtk: '-', incAtk: '-',
+            phyGuard: '-', magGuard: '-', fireGuard: '-', ligtGuard: '-', holyGuard: '-', boostGuard: '-',
+            strScale: '-', dexScale: '-', intScale: '-', faiScale: '-', arcScale: '-',
+            strReq: '-', dexReq: '-', intReq: '-', faiReq: '-', arcReq: '-',
+            category: '-', damageTypes: '-', weaponSkill: '-', fpCost: '-', weight: '-', passive: '-',
+            upgradeType: 'Unknown'
+        };
+
+        if (!weaponData.name || weaponData.name === '-') {
+            console.warn(`Could not find valid name for ${fullUrl}, skipping.`);
+            return null; // Skip if name is missing or invalid
+        }
+
+        // --- Attack Power --- Find the correct td based on the img title
+        const attackPowerTd = infobox.find('img[title="Attack Power"]').closest('td');
+        if (attackPowerTd.length) {
+            const attackDiv = attackPowerTd.find('div.lineleft');
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.phyAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Physical Damage"]')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.magAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Magic Damage"]')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.fireAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Fire Damage"]'))); // Link might be inside span
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            if (weaponData.fireAtk === '0') weaponData.fireAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('span:contains("Fire")'))); // Try span if link fails
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.ligtAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Lightning Damage"]')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            if (weaponData.ligtAtk === '0') weaponData.ligtAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('span:contains("Ligt")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.holyAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Holy Damage"]')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            if (weaponData.holyAtk === '0') weaponData.holyAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('span:contains("Holy")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            const critLink = attackDiv.find('a[title*="Critical Damage"]');
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            const critValueText = findNextTextNodeValue($, critLink);
+            weaponData.critAtk = extractValueOrZero(critValueText);
+             // @ts-ignore - Workaround for persistent Cheerio type issue
+             weaponData.sorAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Sorcery Scaling"]')));
+             // @ts-ignore - Workaround for persistent Cheerio type issue
+             weaponData.incAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Incant Scaling"]')));
+
+        }
+
+        // --- Guarded Damage Negation --- Find the correct td and div
+        const guardTd = infobox.find('img[title="Guarded Damage Negation"]').closest('td');
+        if (guardTd.length) {
+            const guardDiv = guardTd.find('div.lineleft');
+            // Phy guard often doesn't have a span/link, look for text node directly
+            weaponData.phyGuard = extractValueOrZero(guardDiv.contents().filter((_, node) => node.type === 'text' && $(node).text().trim().startsWith('Phy')).text().trim());
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.magGuard = extractValueOrZero(findNextTextNodeValue($, guardDiv.find('span:contains("Mag")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.fireGuard = extractValueOrZero(findNextTextNodeValue($, guardDiv.find('span:contains("Fire")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.ligtGuard = extractValueOrZero(findNextTextNodeValue($, guardDiv.find('span:contains("Ligt")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.holyGuard = extractValueOrZero(findNextTextNodeValue($, guardDiv.find('span:contains("Holy")')));
+            // @ts-ignore - Workaround for persistent Cheerio type issue
+            weaponData.boostGuard = extractValueOrZero(findNextTextNodeValue($, guardDiv.find('span:contains("Boost")')));
+        }
+
+        // --- Scaling --- Find the correct td and div
+        const scalingTd = infobox.find('img[title="Attribute Scaling"]').closest('td');
+        const scalingDiv = scalingTd.find('div.lineleft');
+        const scalingText = scalingDiv.text(); // Get text of the whole div for regex matching
+        weaponData.strScale = extractScaling(scalingText, 'Str');
+        weaponData.dexScale = extractScaling(scalingText, 'Dex');
+        weaponData.intScale = extractScaling(scalingText, 'Int');
+        weaponData.faiScale = extractScaling(scalingText, 'Fai');
+        weaponData.arcScale = extractScaling(scalingText, 'Arc');
+
+        // --- Requirements --- Find the correct td and div
+        const requiresTd = infobox.find('img[title="Attributes Requirement"]').closest('td');
+        const requiresDiv = requiresTd.find('div.lineleft');
+        const requiresText = requiresDiv.text(); // Get text of the whole div for regex matching
+        weaponData.strReq = extractRequirement(requiresText, 'Str');
+        weaponData.dexReq = extractRequirement(requiresText, 'Dex');
+        weaponData.intReq = extractRequirement(requiresText, 'Int');
+        weaponData.faiReq = extractRequirement(requiresText, 'Fai');
+        weaponData.arcReq = extractRequirement(requiresText, 'Arc');
+
+        // --- Category, Damage Type, Skill, FP Cost, Weight, Passive --- Iterate through rows
+        // Resetting temp vars
+        let category = '-';
+        let damageTypes = '-';
+        let weaponSkill = '-';
+        let fpCost = '-';
+        let weight = '-';
+        let passive = '-';
+
+        // Log ALL rows before filtering
+        infobox.find('tr').each((i, tr) => {
+            console.log(`  [Debug] Pre-Filter Row ${i} HTML: ${$(tr).html()?.replace(/\n\s*/g, '')}`); // Log cleaned HTML
+        });
+
+        // Select only the rows *after* the scaling/requirements rows, identified by not having an img child
+        infobox.find('tr').each((_, tr) => {
+            const tds = $(tr).find('td');
+            if (tds.length === 2) {
+                const td1 = $(tds[0]);
+                const td2 = $(tds[1]);
+                const td1Text = td1.text().trim();
+                const td2Text = td2.text().trim();
+                console.log(`  [Debug] Row Scan -> td1: "${td1Text}" | td2: "${td2Text}"`); // Existing DEBUG LOG
+
+                // NEW: Explicitly skip Attack/Guard and Scaling/Req rows
+                if (td1Text.startsWith('Attack') || td1Text.startsWith('Scaling')) {
+                    console.log(`    [Debug] Skipping known header row (Attack/Scaling).`);
+                    return; // Skip this iteration in .each()
+                }
+
+                // Prioritize Weight/Passive check
+                if (td1Text.startsWith('Wgt.')) {
+                    // NEW DEBUG LOG inside weight condition
+                    console.log(`    [Debug] Raw td1Text for Weight: "${td1Text}"`);
+                    // Weight & Passive Row
+                    weight = extractValueOrZero(td1Text) || '-';
+                    passive = extractPassive(td2) || '-';
+                    console.log(`    [Debug] Identified as Weight/Passive Row. Weight: ${weight}, Passive: ${passive}`); // Existing DEBUG LOG
+                }
+                // Then Skill/FP check
+                else if (td2Text?.includes('FP') || td1Text === 'No Skill') {
+                    // Skill & FP Cost Row
+                    if (td1Text === 'No Skill') {
+                        weaponSkill = 'No Skill';
+                    } else {
+                         // Use link text if available, otherwise full text
+                        weaponSkill = td1.find('a').text().trim() || td1Text || '-';
+                    }
+                    // Extract FP cost, defaulting to 0 if only "FP -" is present
+                    fpCost = extractValueOrZero(td2Text);
+                    console.log(`    [Debug] Identified as Skill/FP Row. Skill: ${weaponSkill}, FP Cost: ${fpCost}`);
+                }
+                // Only if others fail AND category is not set, assume Category/Damage
+                else if (category === '-') { // Removed the td1.find('a').length check
+                     // Assume Category & Damage Type Row
+                     // Use link text if available, otherwise full text
+                    category = td1.find('a').text().trim() || td1Text || '-';
+                    damageTypes = td2.find('a').map((_, el) => $(el).text().trim()).get().join('/') || '-';
+                    // Fallback if no links in td2
+                    if (damageTypes === '-' && td2Text) { // Added check for td2Text
+                       // @ts-ignore - Linter seems overly cautious here
+                       damageTypes = td2Text.split('\n')[0].trim().split('/').map(s => s.trim()).join('/') || '-';
+                    }
+                    console.log(`    [Debug] Identified as Category/Damage Row. Category: ${category}, Damage Types: ${damageTypes}`);
+                } else {
+                    // Log rows that don't match the specific patterns or if category was already found
+                    console.log(`    [Debug] Row skipped (td1: "${td1Text}", td2: "${td2Text}") - Not Weight/Skill/FP and Category already found or pattern mismatch.`);
+                }
+            } else {
+                // Log rows skipped because they don't have 2 cells (like header, image, etc.)
+                console.log(`  [Debug] Skipping row processing because it has ${tds.length} cell(s).`);
+            }
+        });
+
+        // Assign the extracted values
+        weaponData.category = category;
+        weaponData.damageTypes = damageTypes;
+        weaponData.weaponSkill = weaponSkill;
+        weaponData.fpCost = fpCost;
+        weaponData.weight = weight;
+        weaponData.passive = passive;
+
+        console.log(`  [Debug] Category: ${category}, DamageTypes: ${damageTypes}, Skill: ${weaponSkill}`); // DEBUG LOG
+
+        // --- Upgrade Type --- Target specific list items or divs containing the upgrade text
+        let upgradeType: WeaponData['upgradeType'] = 'Unknown';
+        const upgradeInfoElements = $('li:contains("can be upgraded by using")'); // Target the li elements directly
+
+        if (upgradeInfoElements.length > 0) {
+            const upgradeText = upgradeInfoElements.first().text(); // Check the first match
+            if (upgradeText.includes('Somber')) {
+                upgradeType = 'Somber';
+            } else if (upgradeText.includes('Smithing Stones')) { // Use "Smithing Stones" for Regular
+                upgradeType = 'Regular';
+            }
+        } else {
+            // Fallback: Check common divs if li not found (less reliable)
+            const bodyText = $('#wiki-content-block').text(); // Search within main content
+             if (bodyText.includes('can be upgraded by using Somber')) {
+                upgradeType = 'Somber';
+            } else if (bodyText.includes('can be upgraded by using Smithing')) {
+                upgradeType = 'Regular';
+            }
+        }
+        weaponData.upgradeType = upgradeType;
+
+        return weaponData as WeaponData;
+
+    } catch (error: any) { // Explicitly type error as any
+        console.error(`Error scraping ${weaponUrl}:`, error.message);
+        return null;
+    }
+}
+
+// Function to get all weapon links from the main weapons page
+async function getAllWeaponLinks(url: string): Promise<string[]> {
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        const links = new Set<string>(); // Use Set for automatic deduplication
+
+        // Select links similar to the working script
+        $('#wiki-content-block a.wiki_link.wiki_tooltip').each((_, element) => {
+            const href = $(element).attr('href');
+            const text = $(element).text().trim();
+
+            // Apply filtering similar to the working script
+            const isSimplePath = href && /^\/[A-Za-z0-9-+\+\(\)\_]+$/.test(href); // Allow underscores
+            const isAttributePage = href && ['/Strength', '/Dexterity', '/Intelligence', '/Faith', '/Arcane'].includes(href);
+            const isCategoryPage = href && href.toLowerCase().endsWith('s'); // Basic check for category pages like /Weapons, /Greatswords
+
+            if (href && isSimplePath && !isAttributePage && !isCategoryPage && href !== '/Weapons') {
+                 // Construct full URL, ensuring no double base URLs
+                 const fullUrl = href.startsWith('http') ? href : `${BASE_URL}${href}`;
+                 links.add(fullUrl);
+            } else {
+                 // Optional: Log filtered out links for debugging
+                 // console.log(`  Filtered out: href="${href}", text="${text}", isSimplePath=${isSimplePath}, isAttributePage=${isAttributePage}, isCategoryPage=${isCategoryPage}`);
+            }
+         });
+
+        const foundLinks = Array.from(links);
+        console.log(`Found ${foundLinks.length} potential weapon links.`);
+        return foundLinks;
+    } catch (error: any) { // Explicitly type error as any
+        console.error(`Error fetching weapon list from ${url}:`, error.message);
+        return [];
+    }
+}
+
+// Function to write data to CSV, ensuring correct column order
+function writeToCsv(data: WeaponData) {
+    const headers: (keyof WeaponData)[] = [
+        'name', 'category', 'phyAtk', 'magAtk', 'fireAtk', 'ligtAtk', 'holyAtk', 'critAtk', 'sorAtk', 'incAtk',
+        'phyGuard', 'magGuard', 'fireGuard', 'ligtGuard', 'holyGuard', 'boostGuard',
+        'strScale', 'dexScale', 'intScale', 'faiScale', 'arcScale',
+        'strReq', 'dexReq', 'intReq', 'faiReq', 'arcReq',
+        'damageTypes', 'weaponSkill', 'fpCost', 'weight', 'passive', 'upgradeType', 'url'
+    ];
+    const values = headers.map(header => {
+        const value = data[header];
+        // Ensure value is string, handle null/undefined/empty, escape double quotes
+        return `"${String(value ?? '-').replace(/"/g, '""')}"`;
+    }).join(',');
+
+    try {
+        if (!fs.existsSync(CSV_FILE_PATH)) {
+            // Write header only if file doesn't exist
+            fs.writeFileSync(CSV_FILE_PATH, headers.join(',') + '\n', 'utf8');
+        }
+        // Append values
+        fs.appendFileSync(CSV_FILE_PATH, values + '\n', 'utf8');
+    } catch (error: any) { // Explicitly type error as any
+        console.error(`Error writing to CSV file ${CSV_FILE_PATH}:`, error.message);
+    }
+}
+
+// Main scraping function
+async function main() {
+    // Delete old CSV file content if it exists
+    try {
+        if (fs.existsSync(CSV_FILE_PATH)) {
+            fs.unlinkSync(CSV_FILE_PATH);
+            console.log(`Deleted old ${CSV_FILE_PATH}`);
+        }
+    } catch (error: any) { // Explicitly type error as any
+        console.error(`Error deleting old CSV file ${CSV_FILE_PATH}:`, error.message);
+        // Decide if you want to continue or exit if deletion fails
+        // return; // Uncomment to exit if deletion fails
+    }
+
+    const weaponLinks = await getAllWeaponLinks(WEAPONS_LIST_URL);
+    const linksToProcess = MAX_WEAPONS_TO_SCRAPE > -1 ? weaponLinks.slice(0, MAX_WEAPONS_TO_SCRAPE) : weaponLinks;
+
+    if (linksToProcess.length === 0) {
+        console.error("No weapon links to process. Exiting.");
+        return;
+    }
+
+    console.log(`Starting scrape of ${linksToProcess.length} weapons (max set to ${MAX_WEAPONS_TO_SCRAPE})...`);
+
+    let scrapedCount = 0;
+    for (const link of linksToProcess) {
+        const weaponData = await scrapeWeaponData(link);
+        if (weaponData) {
+            writeToCsv(weaponData); // Append data row
+            scrapedCount++;
+             // Optional: Add a small delay to avoid overwhelming the server
+             await new Promise(resolve => setTimeout(resolve, 50)); // 50ms delay
+        } else {
+             console.log(`Skipping write for ${link} due to missing data or error.`);
+        }
+    }
+
+    console.log(`Scraping finished. Scraped ${scrapedCount} weapons. Data saved to ${CSV_FILE_PATH}`);
+}
+
+main().catch(error => {
+    console.error("An unexpected error occurred during the main execution:", error);
+});
+
