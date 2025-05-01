@@ -10,7 +10,7 @@ const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
 const MAX_WEAPONS_TO_SCRAPE = 1;
 // Control parameters: Set to positive numbers (1-based index) to scrape a specific slice. -1 disables.
 const HEAD_INDEX = 257; // Start index (inclusive, 1-based)
-const TAIL_INDEX = 264; // End index (inclusive, 1-based)
+const TAIL_INDEX = 257; // End index (inclusive, 1-based)
 
 interface WeaponData {
     name: string;
@@ -126,20 +126,22 @@ const extractRequirement = (text: string, type: 'Str' | 'Dex' | 'Int' | 'Fai' | 
     return match ? (match[1] ?? '-') : '-';
 };
 
-// Helper function to extract passive effect text and value if present
+// Updated helper function based on user instructions
 const extractPassive = (element: cheerio.Cheerio): string => {
-    const text = element.text().replace('Passive', '').trim();
-    const valueMatch = text.match(/\((\d+)\)/); // Look for value in parentheses
-    const value = valueMatch ? `(${valueMatch[1]})` : '';
-    const effectName = text.replace(/\(\d+\)/, '').trim(); // Remove the value part
+    // 1. take the second p from the td (element)
+    const paragraphs = element.find('p');
 
-    if (!effectName || effectName === '-') return '-';
-
-    // Try to get the text description from the link's title if available
-    const linkTitle = element.find('a[title]').attr('title');
-    const nameFromTitle = linkTitle ? linkTitle.replace('Elden Ring ', '').trim() : effectName;
-
-    return `${nameFromTitle}${value}`.trim();
+    if (paragraphs.length > 1) {
+        // Target the second paragraph (index 1) using .eq()
+        const secondParagraph = paragraphs.eq(1); // .eq() returns a Cheerio object
+        // 2. get all text content
+        const secondParagraphText = secondParagraph.text();
+        // 3. trim it and return it
+        return secondParagraphText.trim();
+    } else {
+        // Fallback if there isn't a second paragraph
+        return '-';
+    }
 };
 
 // Function to scrape data for a single weapon
@@ -299,7 +301,9 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
                 if (td1Text.startsWith('Wgt.')) {
                     // Weight & Passive Row
                     weight = extractValueOrZero(td1Text) || '-';
-                    generalPassive = extractPassive(td2) || '-'; // Get general passive text
+                    // console.log(`  [Debug]: ${td2}`);
+                    // Call extractPassive directly on td2, no need to pass $
+                    generalPassive = extractPassive(td2) || '-';
 
                     // Extract specific status effect values from td2
                     const statusEffects = [
