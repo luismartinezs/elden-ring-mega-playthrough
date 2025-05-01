@@ -413,23 +413,52 @@ async function getAllWeaponLinks(url: string): Promise<string[]> {
         const $ = cheerio.load(data);
         const links = new Set<string>(); // Use Set for automatic deduplication
 
+        // Define known non-weapon paths to exclude
+        const knownNonWeaponPaths = [
+            '/Weapons', '/Shields', '/Armor', '/Talismans', '/Ashes+of+War',
+            '/Spells', '/Incantations', '/Sorceries', '/Consumables', '/Crafting',
+            '/Map', '/Bosses', '/Walkthrough', '/New+Game+Plus', '/Game+Progress+Route',
+            '/Side+Quests', '/Endings', '/Upgrades',
+            // Attributes are handled separately, but add them here for completeness if needed elsewhere
+            '/Strength', '/Dexterity', '/Intelligence', '/Faith', '/Arcane',
+             // Add other known general pages if necessary
+             '/Combat+Mechanics', '/Status+Effects', '/Equipment',
+             '/Online', '/Player+vs+Player+PvP', '/Messages',
+             '/Spirit+Ashes' // Example, adjust as needed based on observed filtered links
+        ];
+
+
         // Select links similar to the working script
         $('#wiki-content-block a.wiki_link.wiki_tooltip').each((_, element) => {
             const href = $(element).attr('href');
             const text = $(element).text().trim();
 
-            // Apply filtering similar to the working script
-            const isSimplePath = href && /^\/[A-Za-z0-9-+\+\(\)\_]+$/.test(href); // Allow underscores
+            // Updated simple path regex to allow apostrophes
+            const isSimplePath = href && /^\/[A-Za-z0-9-+'\+\(\)\_]+$/.test(href);
             const isAttributePage = href && ['/Strength', '/Dexterity', '/Intelligence', '/Faith', '/Arcane'].includes(href);
-            const isCategoryPage = href && href.toLowerCase().endsWith('s'); // Basic check for category pages like /Weapons, /Greatswords
+            // Updated check using the exclusion list
+            const isNonWeaponPage = href && knownNonWeaponPaths.includes(href);
 
-            if (href && isSimplePath && !isAttributePage && !isCategoryPage && href !== '/Weapons') {
+
+            // Apply filtering
+            if (href && isSimplePath && !isAttributePage && !isNonWeaponPage) {
                  // Construct full URL, ensuring no double base URLs
                  const fullUrl = href.startsWith('http') ? href : `${BASE_URL}${href}`;
                  links.add(fullUrl);
             } else {
-                 // Optional: Log filtered out links for debugging
-                 // console.log(`  Filtered out: href="${href}", text="${text}", isSimplePath=${isSimplePath}, isAttributePage=${isAttributePage}, isCategoryPage=${isCategoryPage}`);
+                 // Updated logging for filtered out links
+                 let filterReason = [];
+                 if (!href) filterReason.push("no href");
+                 if (href && !isSimplePath) filterReason.push("not simple path"); // Check href exists before isSimplePath
+                 if (isAttributePage) filterReason.push("is attribute page");
+                 if (isNonWeaponPage) filterReason.push("is non-weapon page");
+                 // Only log if there's a reason and href exists
+                 if (href && filterReason.length > 0) {
+                    console.log(`  Filtered out: href="${href}", text="${text}", Reason: ${filterReason.join(', ')}`);
+                 } else if (!href) {
+                    // Log if href itself is missing
+                     console.log(`  Filtered out: text="${text}", Reason: no href`);
+                 }
             }
          });
 
