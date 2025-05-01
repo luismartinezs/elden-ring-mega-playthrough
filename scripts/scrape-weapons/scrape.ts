@@ -8,6 +8,9 @@ const WEAPONS_LIST_URL = `${BASE_URL}/Weapons`;
 const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
 // Control parameter: Set to a positive number to limit scraping, or -1 to scrape all.
 const MAX_WEAPONS_TO_SCRAPE = 1;
+// Control parameters: Set to positive numbers (1-based index) to scrape a specific slice. -1 disables.
+const HEAD_INDEX = 1; // Start index (inclusive, 1-based)
+const TAIL_INDEX = 2; // End index (inclusive, 1-based)
 
 interface WeaponData {
     name: string;
@@ -243,9 +246,9 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
         let passive = '-';
 
         // Log ALL rows before filtering
-        infobox.find('tr').each((i, tr) => {
-            console.log(`  [Debug] Pre-Filter Row ${i} HTML: ${$(tr).html()?.replace(/\n\s*/g, '')}`); // Log cleaned HTML
-        });
+        // infobox.find('tr').each((i, tr) => {
+        //     console.log(`  [Debug] Pre-Filter Row ${i} HTML: ${$(tr).html()?.replace(/\n\s*/g, '')}`); // Log cleaned HTML
+        // });
 
         // Select only the rows *after* the scaling/requirements rows, identified by not having an img child
         infobox.find('tr').each((_, tr) => {
@@ -255,22 +258,22 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
                 const td2 = $(tds[1]);
                 const td1Text = td1.text().trim();
                 const td2Text = td2.text().trim();
-                console.log(`  [Debug] Row Scan -> td1: "${td1Text}" | td2: "${td2Text}"`); // Existing DEBUG LOG
+                // console.log(`  [Debug] Row Scan -> td1: "${td1Text}" | td2: "${td2Text}"`); // Existing DEBUG LOG
 
                 // NEW: Explicitly skip Attack/Guard and Scaling/Req rows
                 if (td1Text.startsWith('Attack') || td1Text.startsWith('Scaling')) {
-                    console.log(`    [Debug] Skipping known header row (Attack/Scaling).`);
+                    // console.log(`    [Debug] Skipping known header row (Attack/Scaling).`);
                     return; // Skip this iteration in .each()
                 }
 
                 // Prioritize Weight/Passive check
                 if (td1Text.startsWith('Wgt.')) {
                     // NEW DEBUG LOG inside weight condition
-                    console.log(`    [Debug] Raw td1Text for Weight: "${td1Text}"`);
+                    // console.log(`    [Debug] Raw td1Text for Weight: "${td1Text}"`);
                     // Weight & Passive Row
                     weight = extractValueOrZero(td1Text) || '-';
                     passive = extractPassive(td2) || '-';
-                    console.log(`    [Debug] Identified as Weight/Passive Row. Weight: ${weight}, Passive: ${passive}`); // Existing DEBUG LOG
+                    // console.log(`    [Debug] Identified as Weight/Passive Row. Weight: ${weight}, Passive: ${passive}`); // Existing DEBUG LOG
                 }
                 // Then Skill/FP check
                 else if (td2Text?.includes('FP') || td1Text === 'No Skill') {
@@ -283,7 +286,7 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
                     }
                     // Extract FP cost, defaulting to 0 if only "FP -" is present
                     fpCost = extractValueOrZero(td2Text);
-                    console.log(`    [Debug] Identified as Skill/FP Row. Skill: ${weaponSkill}, FP Cost: ${fpCost}`);
+                    // console.log(`    [Debug] Identified as Skill/FP Row. Skill: ${weaponSkill}, FP Cost: ${fpCost}`);
                 }
                 // Only if others fail AND category is not set, assume Category/Damage
                 else if (category === '-') { // Removed the td1.find('a').length check
@@ -296,14 +299,14 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
                        // @ts-ignore - Linter seems overly cautious here
                        damageTypes = td2Text.split('\n')[0].trim().split('/').map(s => s.trim()).join('/') || '-';
                     }
-                    console.log(`    [Debug] Identified as Category/Damage Row. Category: ${category}, Damage Types: ${damageTypes}`);
+                    // console.log(`    [Debug] Identified as Category/Damage Row. Category: ${category}, Damage Types: ${damageTypes}`);
                 } else {
                     // Log rows that don't match the specific patterns or if category was already found
-                    console.log(`    [Debug] Row skipped (td1: "${td1Text}", td2: "${td2Text}") - Not Weight/Skill/FP and Category already found or pattern mismatch.`);
+                    // console.log(`    [Debug] Row skipped (td1: "${td1Text}", td2: "${td2Text}") - Not Weight/Skill/FP and Category already found or pattern mismatch.`);
                 }
             } else {
                 // Log rows skipped because they don't have 2 cells (like header, image, etc.)
-                console.log(`  [Debug] Skipping row processing because it has ${tds.length} cell(s).`);
+                // console.log(`  [Debug] Skipping row processing because it has ${tds.length} cell(s).`);
             }
         });
 
@@ -315,7 +318,7 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
         weaponData.weight = weight;
         weaponData.passive = passive;
 
-        console.log(`  [Debug] Category: ${category}, DamageTypes: ${damageTypes}, Skill: ${weaponSkill}`); // DEBUG LOG
+        // console.log(`  [Debug] Category: ${category}, DamageTypes: ${damageTypes}, Skill: ${weaponSkill}`); // DEBUG LOG
 
         // --- Upgrade Type --- Target specific list items or divs containing the upgrade text
         let upgradeType: WeaponData['upgradeType'] = 'Unknown';
@@ -424,15 +427,35 @@ async function main() {
         // return; // Uncomment to exit if deletion fails
     }
 
-    const weaponLinks = await getAllWeaponLinks(WEAPONS_LIST_URL);
-    const linksToProcess = MAX_WEAPONS_TO_SCRAPE > -1 ? weaponLinks.slice(0, MAX_WEAPONS_TO_SCRAPE) : weaponLinks;
+    const allWeaponLinks = await getAllWeaponLinks(WEAPONS_LIST_URL);
+    let linksToProcess: string[] = [];
+    let logMessage = "";
+
+    // Apply slicing based on HEAD_INDEX and TAIL_INDEX first
+    if (HEAD_INDEX > 0 && TAIL_INDEX > 0 && TAIL_INDEX >= HEAD_INDEX) {
+        // Adjust for 0-based index and slice exclusivity
+        const startIndex = HEAD_INDEX - 1;
+        const endIndex = TAIL_INDEX; // slice extracts up to, but not including, endIndex
+        linksToProcess = allWeaponLinks.slice(startIndex, endIndex);
+        logMessage = `Starting scrape of weapons from index ${HEAD_INDEX} to ${TAIL_INDEX} (inclusive)...`;
+    }
+    // Fallback to MAX_WEAPONS_TO_SCRAPE if head/tail not used
+    else if (MAX_WEAPONS_TO_SCRAPE > -1) {
+        linksToProcess = allWeaponLinks.slice(0, MAX_WEAPONS_TO_SCRAPE);
+        logMessage = `Starting scrape of the first ${linksToProcess.length} weapons (max set to ${MAX_WEAPONS_TO_SCRAPE})...`;
+    }
+    // Default to all links
+    else {
+        linksToProcess = allWeaponLinks;
+        logMessage = `Starting scrape of all ${linksToProcess.length} weapons...`;
+    }
 
     if (linksToProcess.length === 0) {
-        console.error("No weapon links to process. Exiting.");
+        console.error("No weapon links to process based on the specified criteria. Exiting.");
         return;
     }
 
-    console.log(`Starting scrape of ${linksToProcess.length} weapons (max set to ${MAX_WEAPONS_TO_SCRAPE})...`);
+    console.log(logMessage); // Use the determined log message
 
     let scrapedCount = 0;
     for (const link of linksToProcess) {
