@@ -1,3 +1,8 @@
+- cd into this folder
+- `bun run scrape.ts` IMPORTANT: sote column is not generated, u wll have to add by hand!!!!
+- review weapons.csv output (there might be some errors)
+- `python convert_csv_to_json.py`
+
 - Scrape weapon data similar to `scripts/scrape-weapon-requirements/scrapeRequirements.ts` but with the following diferences:
   - Scrape not only weapon stat requirements, but also:
     - Weapons name
