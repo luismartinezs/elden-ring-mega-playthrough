@@ -7,10 +7,10 @@ const BASE_URL = 'https://eldenring.wiki.fextralife.com';
 const WEAPONS_LIST_URL = `${BASE_URL}/Weapons`;
 const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
 // Control parameter: Set to a positive number to limit scraping, or -1 to scrape all.
-const MAX_WEAPONS_TO_SCRAPE = 1;
+const MAX_WEAPONS_TO_SCRAPE = -1;
 // Control parameters: Set to positive numbers (1-based index) to scrape a specific slice. -1 disables.
-const HEAD_INDEX = 257; // Start index (inclusive, 1-based)
-const TAIL_INDEX = 257; // End index (inclusive, 1-based)
+const HEAD_INDEX = -1; // Start index (inclusive, 1-based)
+const TAIL_INDEX = -1; // End index (inclusive, 1-based)
 
 interface WeaponData {
     name: string;
@@ -206,22 +206,22 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
             // --- DEBUG sorAtk Start ---
             let sorAtkText = '';
             const sorceryScalingLink = attackDiv.find('a[title*="Sorcery Scaling"]');
-            console.log(`  [Debug sorAtk] Found Sorcery Scaling link: ${sorceryScalingLink.length > 0}`);
+            // console.log(`  [Debug sorAtk] Found Sorcery Scaling link: ${sorceryScalingLink.length > 0}`);
             if (sorceryScalingLink.length > 0) {
                 // @ts-ignore - Workaround for persistent Cheerio type issue
                 sorAtkText = findNextTextNodeValue($, sorceryScalingLink);
             } else {
                 // Fallback: Try finding the span containing "Sor"
                 const sorceryScalingSpan = attackDiv.find('span:contains("Sor")');
-                console.log(`  [Debug sorAtk] Link not found. Found Sorcery Scaling span: ${sorceryScalingSpan.length > 0}`);
+                // console.log(`  [Debug sorAtk] Link not found. Found Sorcery Scaling span: ${sorceryScalingSpan.length > 0}`);
                 if (sorceryScalingSpan.length > 0) {
                     // @ts-ignore - Workaround for persistent Cheerio type issue
                     sorAtkText = findNextTextNodeValue($, sorceryScalingSpan);
                 }
             }
-            console.log(`  [Debug sorAtk] Text found for Sorcery Scaling: "${sorAtkText}"`);
+            // console.log(`  [Debug sorAtk] Text found for Sorcery Scaling: "${sorAtkText}"`);
             weaponData.sorAtk = extractValueOrZero(sorAtkText);
-            console.log(`  [Debug sorAtk] Final sorAtk value after extractValueOrZero: "${weaponData.sorAtk}"`);
+            // console.log(`  [Debug sorAtk] Final sorAtk value after extractValueOrZero: "${weaponData.sorAtk}"`);
              // --- DEBUG sorAtk End ---
 
              // @ts-ignore - Workaround for persistent Cheerio type issue
