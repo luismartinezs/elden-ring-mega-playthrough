@@ -9,8 +9,8 @@ const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
 // Control parameter: Set to a positive number to limit scraping, or -1 to scrape all.
 const MAX_WEAPONS_TO_SCRAPE = 1;
 // Control parameters: Set to positive numbers (1-based index) to scrape a specific slice. -1 disables.
-const HEAD_INDEX = 1; // Start index (inclusive, 1-based)
-const TAIL_INDEX = 2; // End index (inclusive, 1-based)
+const HEAD_INDEX = 5; // Start index (inclusive, 1-based)
+const TAIL_INDEX = 15; // End index (inclusive, 1-based)
 
 interface WeaponData {
     name: string;
@@ -44,6 +44,13 @@ interface WeaponData {
     fpCost: string;
     weight: string;
     passive: string;
+    poison: string;
+    hemorrhage: string;
+    frostbite: string;
+    scarletRot: string;
+    sleep: string;
+    madness: string;
+    deathBlight: string;
     upgradeType: 'Somber' | 'Regular' | 'Unknown';
     url: string;
 }
@@ -136,10 +143,10 @@ const extractPassive = (element: cheerio.Cheerio): string => {
 };
 
 // Function to scrape data for a single weapon
-async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
+async function scrapeWeaponData(weaponUrl: string, index: number): Promise<WeaponData | null> {
     try {
         const fullUrl = weaponUrl.startsWith('http') ? weaponUrl : `${BASE_URL}${weaponUrl}`;
-        console.log(`Scraping: ${fullUrl}`);
+        console.log(`Scraping: ${index} - ${fullUrl}`);
         const { data } = await axios.get(fullUrl);
         const $ = cheerio.load(data);
 
@@ -149,7 +156,7 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
             return null;
         }
 
-        // Initialize weaponData with defaults, especially for numeric types
+        // Initialize weaponData with defaults, especially for numeric types and new passives
         const weaponData: Partial<WeaponData> = {
             url: fullUrl,
             name: infobox.find('h2').first().text().trim() || '-',
@@ -158,6 +165,8 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
             strScale: '-', dexScale: '-', intScale: '-', faiScale: '-', arcScale: '-',
             strReq: '-', dexReq: '-', intReq: '-', faiReq: '-', arcReq: '-',
             category: '-', damageTypes: '-', weaponSkill: '-', fpCost: '-', weight: '-', passive: '-',
+            // Initialize new passive fields
+            poison: '-', hemorrhage: '-', frostbite: '-', scarletRot: '-', sleep: '-', madness: '-', deathBlight: '-',
             upgradeType: 'Unknown'
         };
 
@@ -243,7 +252,7 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
         let weaponSkill = '-';
         let fpCost = '-';
         let weight = '-';
-        let passive = '-';
+        let generalPassive = '-'; // Renamed to avoid conflict
 
         // Log ALL rows before filtering
         // infobox.find('tr').each((i, tr) => {
@@ -268,11 +277,31 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
 
                 // Prioritize Weight/Passive check
                 if (td1Text.startsWith('Wgt.')) {
-                    // NEW DEBUG LOG inside weight condition
-                    // console.log(`    [Debug] Raw td1Text for Weight: "${td1Text}"`);
                     // Weight & Passive Row
                     weight = extractValueOrZero(td1Text) || '-';
-                    passive = extractPassive(td2) || '-';
+                    generalPassive = extractPassive(td2) || '-'; // Get general passive text
+
+                    // Extract specific status effect values from td2
+                    const statusEffects = [
+                        { key: 'poison', titleTerm: 'Poison' },
+                        { key: 'hemorrhage', titleTerm: 'Hemorrhage' }, // Check wiki for exact title term if needed
+                        { key: 'frostbite', titleTerm: 'Frostbite' },
+                        { key: 'scarletRot', titleTerm: 'Scarlet Rot' },
+                        { key: 'sleep', titleTerm: 'Sleep' },
+                        { key: 'madness', titleTerm: 'Madness' },
+                        { key: 'deathBlight', titleTerm: 'Death Blight' } // Check wiki for exact title term if needed
+                    ] as const; // Use 'as const' for stronger typing of key
+
+                    statusEffects.forEach(effect => {
+                        const link = td2.find(`a[title*="${effect.titleTerm}"]`);
+                        if (link.length) {
+                            const linkText = link.text(); // e.g., "(66)"
+                            const valueMatch = linkText.match(/\((\d+)\)/);
+                            weaponData[effect.key] = (valueMatch && valueMatch[1]) ? valueMatch[1] : 'ERR'; // Use 'ERR' if value not found in expected format
+                        } else {
+                           weaponData[effect.key] = '-'; // No link found for this effect
+                        }
+                    });
                     // console.log(`    [Debug] Identified as Weight/Passive Row. Weight: ${weight}, Passive: ${passive}`); // Existing DEBUG LOG
                 }
                 // Then Skill/FP check
@@ -316,7 +345,7 @@ async function scrapeWeaponData(weaponUrl: string): Promise<WeaponData | null> {
         weaponData.weaponSkill = weaponSkill;
         weaponData.fpCost = fpCost;
         weaponData.weight = weight;
-        weaponData.passive = passive;
+        weaponData.passive = generalPassive; // Assign general passive text here
 
         // console.log(`  [Debug] Category: ${category}, DamageTypes: ${damageTypes}, Skill: ${weaponSkill}`); // DEBUG LOG
 
@@ -393,7 +422,10 @@ function writeToCsv(data: WeaponData) {
         'phyGuard', 'magGuard', 'fireGuard', 'ligtGuard', 'holyGuard', 'boostGuard',
         'strScale', 'dexScale', 'intScale', 'faiScale', 'arcScale',
         'strReq', 'dexReq', 'intReq', 'faiReq', 'arcReq',
-        'damageTypes', 'weaponSkill', 'fpCost', 'weight', 'passive', 'upgradeType', 'url'
+        'damageTypes', 'weaponSkill', 'fpCost', 'weight', 'passive',
+        // Add new passive columns here
+        'poison', 'hemorrhage', 'frostbite', 'scarletRot', 'sleep', 'madness', 'deathBlight',
+        'upgradeType', 'url'
     ];
     const values = headers.map(header => {
         const value = data[header];
@@ -458,8 +490,8 @@ async function main() {
     console.log(logMessage); // Use the determined log message
 
     let scrapedCount = 0;
-    for (const link of linksToProcess) {
-        const weaponData = await scrapeWeaponData(link);
+    for (const [index, link] of linksToProcess.entries()) {
+        const weaponData = await scrapeWeaponData(link, index + 1);
         if (weaponData) {
             writeToCsv(weaponData); // Append data row
             scrapedCount++;
