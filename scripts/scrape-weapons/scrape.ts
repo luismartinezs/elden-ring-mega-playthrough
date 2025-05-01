@@ -126,22 +126,93 @@ const extractRequirement = (text: string, type: 'Str' | 'Dex' | 'Int' | 'Fai' | 
     return match ? (match[1] ?? '-') : '-';
 };
 
-// Updated helper function based on user instructions
-const extractPassive = (element: cheerio.Cheerio): string => {
-    // 1. take the second p from the td (element)
+// Updated helper function - Now accepts Cheerio Root instance '$'
+const extractPassive = ($: cheerio.Root, element: cheerio.Cheerio): string => {
+    // console.log("[extractPassive] Starting...");
     const paragraphs = element.find('p');
+    // console.log(`[extractPassive] Found ${paragraphs.length} paragraphs.`);
 
-    if (paragraphs.length > 1) {
-        // Target the second paragraph (index 1) using .eq()
-        const secondParagraph = paragraphs.eq(1); // .eq() returns a Cheerio object
-        // 2. get all text content
-        const secondParagraphText = secondParagraph.text();
-        // 3. trim it and return it
-        return secondParagraphText.trim();
-    } else {
-        // Fallback if there isn't a second paragraph
-        return '-';
+    if (paragraphs.length === 0) {
+        // console.log("[extractPassive] No paragraphs found, returning '-'.");
+        return '-'; // No paragraphs found
     }
+
+    // Keywords/patterns to identify the status effect paragraph
+    const statusEffectKeywords = [
+        '/Poison', '/Hemorrhage', '/Frostbite', '/Scarlet+Rot',
+        '/Sleep', '/Madness', '/Death+Blight'
+    ];
+
+    let statusParagraphIndex = -1;
+
+    paragraphs.each((index, p) => {
+        // Revert to standard Cheerio wrapping for the element in the loop
+        const paragraph = $(p); // Use $(p) which should correctly wrap the element
+        const html = paragraph.html(); // Check HTML content
+        // console.log(`[extractPassive] Checking Paragraph ${index} HTML: ${html?.substring(0, 100)}...`); // Log start of HTML
+        if (!html) {
+            // console.log(`[extractPassive] Paragraph ${index} has no HTML, skipping.`);
+            return; // Skip if no HTML
+        }
+
+        // Check ONLY for links containing status effect keywords in href
+        const hasStatusLink = statusEffectKeywords.some(keyword => html.includes(`href="${keyword}"`));
+
+        // Rely solely on the presence of a status effect link
+        if (hasStatusLink) {
+            // console.log(`[extractPassive] Status link found in Paragraph ${index}.`);
+            statusParagraphIndex = index;
+            return false; // Stop .each loop once found
+        }
+    });
+
+    // console.log(`[extractPassive] Determined Status Paragraph Index: ${statusParagraphIndex}`);
+
+    let passiveParagraphIndex = -1;
+
+    if (paragraphs.length === 1) {
+        // If the single paragraph is not the status one, assume it's passive
+        if (statusParagraphIndex !== 0) {
+            passiveParagraphIndex = 0;
+        }
+    } else if (paragraphs.length >= 2) {
+        // If status found in first, passive is second (or first potential)
+        if (statusParagraphIndex === 0) {
+            passiveParagraphIndex = 1;
+        }
+        // If status found in second, passive is first
+        else if (statusParagraphIndex === 1) {
+            passiveParagraphIndex = 0;
+        }
+        // If status not found in first two, assume passive is first (heuristic)
+        else {
+             passiveParagraphIndex = 0;
+        }
+    }
+
+    console.log(`[extractPassive] Determined Passive Paragraph Index: ${passiveParagraphIndex}`);
+
+    if (passiveParagraphIndex === -1) {
+        console.log("[extractPassive] Could not determine passive paragraph, returning '-'.");
+        return '-'; // Could not determine passive paragraph
+    }
+
+    const passiveParagraph = paragraphs.eq(passiveParagraphIndex);
+    console.log(`[extractPassive] Raw Passive Paragraph HTML: ${passiveParagraph.html()}`);
+
+    // Clone the paragraph to modify it without affecting the original structure if needed elsewhere
+    const tempParagraph = passiveParagraph.clone();
+
+    // Find and remove the "Passive" link/image part if it exists
+    tempParagraph.find('a:has(img[title="Passive Effects"]), a:contains("Passive")').remove();
+    console.log(`[extractPassive] Passive Paragraph HTML after cleaning link: ${tempParagraph.html()}`);
+
+    // Get the remaining text and trim it
+    const passiveText = tempParagraph.text().trim();
+    console.log(`[extractPassive] Extracted Passive Text: "${passiveText}"`);
+
+    console.log("[extractPassive] Finished.");
+    return passiveText || '-'; // Return text or '-' if empty after removal
 };
 
 // Function to scrape data for a single weapon
@@ -302,8 +373,8 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
                     // Weight & Passive Row
                     weight = extractValueOrZero(td1Text) || '-';
                     // console.log(`  [Debug]: ${td2}`);
-                    // Call extractPassive directly on td2, no need to pass $
-                    generalPassive = extractPassive(td2) || '-';
+                    // Call extractPassive, passing the Cheerio instance '$'
+                    generalPassive = extractPassive($, td2) || '-';
 
                     // Extract specific status effect values from td2
                     const statusEffects = [
@@ -364,7 +435,7 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
         });
 
         // Assign the extracted values
-        weaponData.category = category;
+        weaponData.category = category.endsWith('s') ? category.slice(0, -1) : category;
         weaponData.damageTypes = damageTypes;
         weaponData.weaponSkill = weaponSkill;
         weaponData.fpCost = fpCost;
