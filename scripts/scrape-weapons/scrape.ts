@@ -9,8 +9,8 @@ const CSV_FILE_PATH = path.join(__dirname, 'weapons.csv');
 // Control parameter: Set to a positive number to limit scraping, or -1 to scrape all.
 const MAX_WEAPONS_TO_SCRAPE = 1;
 // Control parameters: Set to positive numbers (1-based index) to scrape a specific slice. -1 disables.
-const HEAD_INDEX = 5; // Start index (inclusive, 1-based)
-const TAIL_INDEX = 15; // End index (inclusive, 1-based)
+const HEAD_INDEX = 257; // Start index (inclusive, 1-based)
+const TAIL_INDEX = 264; // End index (inclusive, 1-based)
 
 interface WeaponData {
     name: string;
@@ -200,8 +200,28 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
             // @ts-ignore - Workaround for persistent Cheerio type issue
             const critValueText = findNextTextNodeValue($, critLink);
             weaponData.critAtk = extractValueOrZero(critValueText);
-             // @ts-ignore - Workaround for persistent Cheerio type issue
-             weaponData.sorAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Sorcery Scaling"]')));
+
+            // --- DEBUG sorAtk Start ---
+            let sorAtkText = '';
+            const sorceryScalingLink = attackDiv.find('a[title*="Sorcery Scaling"]');
+            console.log(`  [Debug sorAtk] Found Sorcery Scaling link: ${sorceryScalingLink.length > 0}`);
+            if (sorceryScalingLink.length > 0) {
+                // @ts-ignore - Workaround for persistent Cheerio type issue
+                sorAtkText = findNextTextNodeValue($, sorceryScalingLink);
+            } else {
+                // Fallback: Try finding the span containing "Sor"
+                const sorceryScalingSpan = attackDiv.find('span:contains("Sor")');
+                console.log(`  [Debug sorAtk] Link not found. Found Sorcery Scaling span: ${sorceryScalingSpan.length > 0}`);
+                if (sorceryScalingSpan.length > 0) {
+                    // @ts-ignore - Workaround for persistent Cheerio type issue
+                    sorAtkText = findNextTextNodeValue($, sorceryScalingSpan);
+                }
+            }
+            console.log(`  [Debug sorAtk] Text found for Sorcery Scaling: "${sorAtkText}"`);
+            weaponData.sorAtk = extractValueOrZero(sorAtkText);
+            console.log(`  [Debug sorAtk] Final sorAtk value after extractValueOrZero: "${weaponData.sorAtk}"`);
+             // --- DEBUG sorAtk End ---
+
              // @ts-ignore - Workaround for persistent Cheerio type issue
              weaponData.incAtk = extractValueOrZero(findNextTextNodeValue($, attackDiv.find('a[title*="Incant Scaling"]')));
 
@@ -351,21 +371,24 @@ async function scrapeWeaponData(weaponUrl: string, index: number): Promise<Weapo
 
         // --- Upgrade Type --- Target specific list items or divs containing the upgrade text
         let upgradeType: WeaponData['upgradeType'] = 'Unknown';
-        const upgradeInfoElements = $('li:contains("can be upgraded by using")'); // Target the li elements directly
+        // Select li elements containing the core upgrade material names
+        const upgradeInfoElements = $('li:contains("Smithing Stones"), li:contains("Somber")');
 
         if (upgradeInfoElements.length > 0) {
-            const upgradeText = upgradeInfoElements.first().text(); // Check the first match
+            const upgradeText = upgradeInfoElements.first().text();
+            // Check for Somber first as "Somber Smithing Stones" includes "Smithing Stones"
             if (upgradeText.includes('Somber')) {
                 upgradeType = 'Somber';
-            } else if (upgradeText.includes('Smithing Stones')) { // Use "Smithing Stones" for Regular
+            } else if (upgradeText.includes('Smithing Stones')) {
                 upgradeType = 'Regular';
             }
         } else {
             // Fallback: Check common divs if li not found (less reliable)
             const bodyText = $('#wiki-content-block').text(); // Search within main content
-             if (bodyText.includes('can be upgraded by using Somber')) {
+             // Check for phrases indicating upgrade type in the broader text
+             if (bodyText.includes('using Somber')) { // Covers "can be upgraded using Somber" and "Upgraded using Somber"
                 upgradeType = 'Somber';
-            } else if (bodyText.includes('can be upgraded by using Smithing')) {
+            } else if (bodyText.includes('using Smithing')) { // Covers "can be upgraded using Smithing" and "Upgraded using Smithing"
                 upgradeType = 'Regular';
             }
         }
