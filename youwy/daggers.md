@@ -1,0 +1,18 @@
+- Glintstone Kris
+- Black Knife
+- Miséricorde
+- Erdsteel Dagger
+- Reduvia
+- Bloodstained Dagger
+- Blade of Calling
+- Dagger
+- Cinquedea
+- Wakizashi
+- Scorpion's Stinger
+- Parrying Dagger
+- Fire Knight's Shortsword
+- Great Knife
+- Main-Gauche
+- Crystal Knife
+- Celebrant's Sickle
+- Ivory Sickle

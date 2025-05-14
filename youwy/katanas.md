@@ -1,0 +1,10 @@
+- Nagakiba
+- Moonveil Katana
+- Uchigatana
+- Sword of Night
+- Hand of Malenia
+- Rivers of Blood
+- Dragonscale Blade
+- Star-Lined Sword
+- Serpentbone Blade
+- Meteoric Ore Blade

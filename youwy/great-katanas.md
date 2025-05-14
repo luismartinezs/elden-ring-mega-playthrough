@@ -1,0 +1,3 @@
+- Great Katana
+- Rakshasa's Great Katana
+- Dragon-Hunter's Great Katana

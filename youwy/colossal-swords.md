@@ -1,0 +1,16 @@
+- Greatsword (Guts's Greatsword)
+- Ancient Meteoric Ore Greatsword
+- Zweihander
+- Fire Knight's Greatsword
+- Godslayer's Greatsword
+- Ruins Greatsword
+- Starscourge Greatsword
+- Maliketh's Black Blade
+- Greatsword of Radahn (Lord)
+- Royal Greatsword
+- Grafted Blade Greatsword
+- Moonrithyll's Knight Sword
+- Watchdog's Greatsword
+- Troll's Golden Sword
+- Greatsword of Radahn (Light)
+- Troll's Knight Sword

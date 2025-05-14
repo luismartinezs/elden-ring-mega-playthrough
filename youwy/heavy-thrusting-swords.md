@@ -1,0 +1,6 @@
+- Sword Lance
+- Bloody Helice
+- Great Épée
+- Godskin Stitcher
+- Dragon King's Cragblade
+- Queelign's Greatsword

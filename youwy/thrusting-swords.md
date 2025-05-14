@@ -1,0 +1,8 @@
+- Estoc
+- Cleanrot Knight's Sword
+- Rogier's Rapier
+- Antspur Rapier
+- Rapier
+- Noble's Estoc
+- Carian Sorcery Sword
+- Frozen Needle

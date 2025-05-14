@@ -1,0 +1,16 @@
+- Marika's Hammer
+- Flowerstone Gavel
+- Stone Club
+- Spiked Club
+- Morning Star
+- Envoy's Horn
+- Hammer
+- Ringed Finger
+- Nox Flowing Hammer
+- Scepter of the All-Knowing
+- Monk's Flamemace
+- Warpick
+- Club
+- Curved Club
+- Mace
+- Varre's Bouquet
