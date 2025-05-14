@@ -1,0 +1,20 @@
+- Bloodfiend's Arm
+- Giant-Crusher
+- Fallingstar Beast Jaw
+- Gazing Finger
+- Prelate's Inferno Crozier
+- Watchdog's Staff
+- Envoy's Greathorn
+- Ghiza's Wheel
+- Anvil Hammer
+- Duelist Greataxe
+- Shadow Sunflower Blossom
+- Devonia's Hammer
+- Golem's Halberd
+- Great Club
+- Axe of Godfrey
+- Troll's Hammer
+- Staff of the Avatar
+- Rotten Greataxe
+- Rotten Staff
+- Dragon Greatclaw

@@ -1,0 +1,12 @@
+- Rabbath's Cannon
+- Pulley Crossbow
+- Spread Crossbow
+- Repeating Crossbow
+- Jar Cannon
+- Arbalest
+- Hand Ballista
+- Full Moon Crossbow
+- Heavy Crossbow
+- Crepus's Black-Key Crossbow
+- Light Crossbow
+- Soldier's Crossbow

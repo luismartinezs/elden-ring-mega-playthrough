@@ -1,0 +1,8 @@
+- Euporia
+- Godskin Peeler
+- Gargoyle's Twinblade
+- Eleonora's Poleblade
+- Twinned Knight Swords
+- Black Steel Twinblade
+- Twinblade
+- Gargoyle's Black Blades

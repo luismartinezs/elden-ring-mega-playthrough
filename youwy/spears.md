@@ -1,0 +1,19 @@
+- Bolt of Gransax
+- Cross-Naginata
+- Death Ritual Spear
+- Bloodfiend's Fork
+- Clayman's Harpoon
+- Spiked Spear
+- Pike
+- Short Spear
+- Cleanrot Spear
+- Smithscript Spear
+- Rotten Crystal Spear
+- Spear
+- Partisan
+- Inquisitor's Girandole
+- Swift Spear
+- Crystal Spear
+- Iron Spear
+- Torchpole
+- Celebrant's Rib-Rake

@@ -1,0 +1,12 @@
+- Dragon Communion Seal
+- Erdtree Seal
+- Golden Order Seal
+- Godslayer's Seal
+- Clawmark Seal
+- Gravel Stone Seal
+- Finger Seal
+- Dryleaf Seal
+- Giant's Seal
+- Fire Knight's Seal
+- Frenzied Flame Seal
+- Spiraltree Seal

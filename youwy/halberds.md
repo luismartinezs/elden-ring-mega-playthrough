@@ -1,0 +1,18 @@
+- Nightrider Glaive
+- Dragon Halberd
+- Guardian's Swordspear
+- Vulgar Militia Saw
+- Banished Knight's Halberd
+- Halberd
+- Lucerne
+- Commander's Standard
+- Poleblade of the Bud
+- Ripple Crescent Halberd
+- Golden Halberd
+- Gargoyle's Halberd
+- Glaive
+- Loretta's War Sickle
+- Pest's Glaive
+- Vulgar Militia Shotel
+- Spirit Glaive
+- Gargoyle's Black Halberd

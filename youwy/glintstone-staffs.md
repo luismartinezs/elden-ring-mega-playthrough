@@ -1,0 +1,20 @@
+- Carian Regal Scepter
+- Lusat's Glintstone Staff
+- Carian Glintstone Staff
+- Meteorite Staff
+- Staff of Loss
+- Crystal Staff
+- Carian Glintblade Staff
+- Staff of the Great Beyond
+- Academy Glintstone Staff
+- Prince of Death's Staff
+- Astrologer's Staff
+- Demi-Human Queen's Staff
+- Staff of the Guilty
+- Albinauric Staff
+- Gelmir Glintstone Staff
+- Maternal Staff
+- Azur's Glintstone Staff
+- Carian Sorcery Sword
+- Digger's Staff
+- Rotten Crystal Staff

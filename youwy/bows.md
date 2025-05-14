@@ -1,0 +1,19 @@
+- Ansbach's Longbow
+- Lion Greatbow
+- Golem Greatbow
+- Greatbow
+- Composite Bow
+- Pulley Bow
+- Bone Bow
+- Black Bow
+- Longbow
+- Albinauric Bow
+- Misbegotten Shortbow
+- Erdtree Bow
+- Erdtree Greatbow
+- Igon's Greatbow
+- Horn Bow
+- Serpent Bow
+- Shortbow
+- Red Branch Shortbow
+- Harp Bow

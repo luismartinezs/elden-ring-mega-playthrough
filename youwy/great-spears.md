@@ -1,0 +1,10 @@
+- Mohgwyn's Sacred Spear
+- Messmer Soldier's Spear
+- Siluria's Tree
+- Serpent-Hunter
+- Lance
+- Barbed Staff-Spear
+- Spear of the Impaler
+- Treespear
+- Vyke's War Spear
+- Bloodfiend's Sacred Spear

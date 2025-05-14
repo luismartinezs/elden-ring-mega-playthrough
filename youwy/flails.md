@@ -1,0 +1,6 @@
+- Serpent Flail
+- Bastard's Stars
+- Family Heads
+- Chainlink Flail
+- Flail
+- Nightrider Flail

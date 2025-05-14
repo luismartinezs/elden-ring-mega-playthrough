@@ -1,0 +1,5 @@
+- Halo Scythe
+- Grave Scythe
+- Obsidian Lamina
+- Scythe
+- Winged Scythe

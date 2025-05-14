@@ -1,0 +1,17 @@
+- Warped Axe
+- Rosus' Axe
+- Iron Cleaver
+- Ripple Blade
+- Stormhawk Axe
+- Messmer Soldier's Axe
+- Death Knight's Twin Axes
+- Highland Axe
+- Jawbone Axe
+- Forked Hatchet
+- Smithscript Axe
+- Icerind Hatchet
+- Sacrificial Axe
+- Battle Axe
+- Hand Axe
+- Celebrant's Cleaver
+- Forked-Tongue Hatchet

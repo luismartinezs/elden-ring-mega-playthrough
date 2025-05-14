@@ -1,0 +1,14 @@
+- Rusted Anchor
+- Death Knight's Longhaft Axe
+- Executioner's Greataxe
+- Great Omenkiller Cleaver
+- Longhaft Axe
+- Greataxe
+- Crescent Moon Axe
+- Bonny Butchering Knife
+- Axe of Godrick
+- Putrescence Cleaver
+- Winged Greathorn
+- Butchering Knife
+- Gargoyle's Great Axe
+- Gargoyle's Black Axe

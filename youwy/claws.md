@@ -1,0 +1,5 @@
+- Raptor Talons
+- Venomous Fang
+- Bloodhound Claws
+- Claws of Night
+- Hookclaws

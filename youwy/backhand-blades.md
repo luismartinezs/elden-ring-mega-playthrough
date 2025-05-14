@@ -1,0 +1,3 @@
+- Backhand Blade
+- Curseblade's Cirque
+- Smithscript Cirque

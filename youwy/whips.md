@@ -1,0 +1,7 @@
+- Urumi
+- Magma Whip Candlestick
+- Tooth Whip
+- Hoslow's Petal Whip
+- Thorned Whip
+- Giant's Red Braid
+- Whip
