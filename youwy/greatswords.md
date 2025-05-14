@@ -1,0 +1,24 @@
+- Blasphemous Blade
+- Dark Moon Greatsword
+- Death's Poker
+- Marais Executioner's Sword
+- Ordovis's Greatsword
+- Sacred Relic Sword
+- Claymore
+- Iron Greatsword
+- Alabaster Lord's Sword
+- Greatsword of Solitude
+- Flamberge
+- Banished Knight's Greatsword
+- Gargoyle's Blackblade
+- Sword of Milos
+- Gargoyle's Greatsword
+- Greatsword of Damnation
+- Lordsworn's Greatsword
+- Golden Order Greatsword
+- Helphen's Steeple
+- Knight's Greatsword
+- Bastard Sword
+- Lizard Greatsword
+- Inseparable Sword
+- Forked Greatsword

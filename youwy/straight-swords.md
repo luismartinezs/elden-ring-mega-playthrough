@@ -1,0 +1,23 @@
+- Sword of Night and Flame
+- Coded Sword
+- Lordsworn's Straight Sword
+- Broadsword
+- Regalia of Eochaid
+- Noble's Slender Sword
+- Warhawk's Talon
+- Longsword
+- Ornamental Straight Sword
+- Short Sword
+- Rotten Crystal Sword
+- Sword of Light
+- Golden Epitaph
+- Sword of Darkness
+- Velvet Sword of St Trina
+- Miquellan Knight's Sword
+- Sword of St Trina
+- Stone-Sheathed Sword
+- Carian Knight's Sword
+- Lazuli Glintstone Sword
+- Crystal Sword
+- Weathered Straight Sword
+- Cane Sword

@@ -1,0 +1,16 @@
+- Great Stars
+- Pickaxe
+- Cranial Vessel Candlestand
+- Beastclaw Greathammer
+- Curved Great Club
+- Brick Hammer
+- Great Mace
+- Black Steel Greathammer
+- Envoy's Long Horn
+- Smithscript Greathammer
+- Large Club
+- Rotten Battle Hammer
+- Greathorn Hammer
+- Battle Hammer
+- Devourer's Scepter
+- Celebrant's Skull
